@@ -1,0 +1,9 @@
+-- This Script is testing in Oracle, SQL Server and MySql
+select max(e.salary) as SecondHighestSalary
+from
+(select employee_id, salary, 
+DENSE_RANK() Over(order by salary desc) as rk
+from Employees) e
+where e.rk = 2
+
+

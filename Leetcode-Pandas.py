@@ -72,8 +72,45 @@ def article_views(views: pd.DataFrame) -> pd.DataFrame:
 Note:
 Drop Duplicates: Return DataFrame with duplicate rows removed.
 Syntax: DataFrame.drop_duplicates(subset=None, *, keep='first', inplace=False, ignore_index=False)
-Sory By Values: Sort by the values along either axis.
+Sort By Values: Sort by the values along either axis.
 Syntax:DataFrame.sort_values(by, *, axis=0, ascending=True, inplace=False, kind='quicksort', na_position='last', ignore_index=False, key=None)"
 
+Problem 5: Invalid Tweets:
+========================
+data = [[1, 'Vote for Biden'], [2, 'Let us make America great again!']]
+tweets = pd.DataFrame(data, columns=['tweet_id', 'content']).astype({'tweet_id':'Int64', 'content':'object'})
+
+Write a solution to find the IDs of the invalid tweets. The tweet is invalid if the number of characters used in the content of the tweet is strictly greater than 15.
+Return the result table in any order.
+
+def invalid_tweets(tweets: pd.DataFrame) -> pd.DataFrame:
+    mask = tweets[tweets['content'].str.len()>15]
+    return mask[['tweet_id']]
+
+Note: We use the str.len method to check the length of the String"
+
+Problem #6 : Calculate Special Bonus
+==================================
+data = [[2, 'Meir', 3000], [3, 'Michael', 3800], [7, 'Addilyn', 7400], [8, 'Juan', 6100], [9, 'Kannon', 7700]]
+employees = pd.DataFrame(data, columns=['employee_id', 'name', 'salary']).astype({'employee_id':'int64', 'name':'object', 'salary':'int64'})
+
+Write a solution to calculate the bonus of each employee. The bonus of an employee is 100% of their salary if the ID of the employee is an odd number and the employee's name does not start with the character 'M'. The bonus of an employee is 0 otherwise.
+Return the result table ordered by employee_id.
+
+def calculate_special_bonus(employees: pd.DataFrame) -> pd.DataFrame:
+    employees['bonus'] = employees.apply(lambda row: row['salary'] if int(row['employee_id']) % 2 != 0 and not row['name'].startswith('M') else 0, axis=1)
+    result = employees[['employee_id','bonus']]
+    result.sort_values(by = 'employee_id', inplace = True)
+    return result
+
+Notes:
+Lambda
+Syntax: lambda arguments : expression
+This function can have any number of arguments but only one expression, which is evaluated and returned.
+One is free to use lambda functions wherever function objects are required.
+lambda functions are syntactically restricted to a single expression.
+pandas.DataFrame.apply
+Apply a function along an axis of the DataFrame. Function to apply to each column or row.
+Syntax: DataFrame.apply(func, axis=0, raw=False, result_type=None, args=(), by_row='compat', **kwargs)"
 
 

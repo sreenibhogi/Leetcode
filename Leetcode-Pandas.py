@@ -114,3 +114,5 @@ Apply a function along an axis of the DataFrame. Function to apply to each colum
 Syntax: DataFrame.apply(func, axis=0, raw=False, result_type=None, args=(), by_row='compat', **kwargs)"
 
 
+
+

@@ -113,6 +113,88 @@ pandas.DataFrame.apply
 Apply a function along an axis of the DataFrame. Function to apply to each column or row.
 Syntax: DataFrame.apply(func, axis=0, raw=False, result_type=None, args=(), by_row='compat', **kwargs)"
 
+Problem #7 : Fix Names in a Table:
+==================================
+data = [[1, 'aLice'], [2, 'bOB']]
+users = pd.DataFrame(data, columns=['user_id', 'name']).astype({'user_id':'Int64', 'name':'object'})
+"Write a solution to fix the names so that only the first character is uppercase and the rest are lowercase."
+def fix_names(users: pd.DataFrame) -> pd.DataFrame:
+    users['name'] = users['name'].str.capitalize()
+    #users['name'] = users['name'].str.title()
+  # Sort the result table by user_id in ascending order
+    result_df = users.sort_values(by='user_id', ascending=True)
+    return result_df
 
+Problem #8 :Find Users With Valid E-Mails
+========================================
+data = [[1, 'Winston', 'winston@leetcode.com'], [2, 'Jonathan', 'jonathanisgreat'], [3, 'Annabelle', 'bella-@leetcode.com'], [4, 'Sally', 'sally.come@leetcode.com'], [5, 'Marwan', 'quarz#2020@leetcode.com'], [6, 'David', 'david69@gmail.com'], [7, 'Shapiro', '.shapo@leetcode.com']]
+users = pd.DataFrame(data, columns=['user_id', 'name', 'mail']).astype({'user_id':'int64', 'name':'object', 'mail':'object'})
+
+Input: 
+Users table:
++---------+-----------+-------------------------+
+| user_id | name      | mail                    |
++---------+-----------+-------------------------+
+| 1       | Winston   | winston@leetcode.com    |
+| 2       | Jonathan  | jonathanisgreat         |
+| 3       | Annabelle | bella-@leetcode.com     |
+| 4       | Sally     | sally.come@leetcode.com |
+| 5       | Marwan    | quarz#2020@leetcode.com |
+| 6       | David     | david69@gmail.com       |
+| 7       | Shapiro   | .shapo@leetcode.com     |
++---------+-----------+-------------------------+
+Output: 
++---------+-----------+-------------------------+
+| user_id | name      | mail                    |
++---------+-----------+-------------------------+
+| 1       | Winston   | winston@leetcode.com    |
+| 3       | Annabelle | bella-@leetcode.com     |
+| 4       | Sally     | sally.come@leetcode.com |
++---------+-----------+-------------------------+
+Explanation: 
+The mail of user 2 does not have a domain.
+The mail of user 5 has the # sign which is not allowed.
+The mail of user 6 does not have the leetcode domain.
+The mail of user 7 starts with a period.
+
+Write a solution to find the users who have valid emails.
+
+"A valid e-mail has a prefix name and a domain where:
+The prefix name is a string that may contain letters (upper or lower case), digits, underscore '_', period '.', and/or dash '-'. The prefix name must start with a letter.
+The domain is '@leetcode.com'.
+Return the result table in any order."
+
+def valid_emails(users: pd.DataFrame) -> pd.DataFrame:
+   regex_pattern = "[A-Za-z][A-Za-z0-9_\.\-]*@leetcode(\?com)?\.com"
+   users = (users[users.mail.str.match(regex_pattern)])
+   return users
+
+Problem #9: Patients With a Condition
+==================================
+data = [[1, 'Daniel', 'YFEV COUGH'], [2, 'Alice', ''], [3, 'Bob', 'DIAB100 MYOP'], [4, 'George', 'ACNE DIAB100'], [5, 'Alain', 'DIAB201']]
+patients = pd.DataFrame(data, columns=['patient_id', 'patient_name', 'conditions']).astype({'patient_id':'int64', 'patient_name':'object', 'conditions':'object'})
+
+"Write a solution to find the patient_id, patient_name, and conditions of the patients who have Type I Diabetes.
+Type I Diabetes always starts with DIAB1 prefix.
+Return the result table in any order."
+
+def find_patients(patients: pd.DataFrame) -> pd.DataFrame:
+       patients = patients[patients['conditions'].str.contains(r'(^DIAB1)|( DIAB1)')]
+       return patients
+
+Problem #10: Count Occurrences in Text
+=====================================
+data = [['draft1.txt', 'The stock exchange predicts a bull market which would make many investors happy.'], ['draft2.txt', 'The stock exchange predicts a bull market which would make many investors happy, but analysts warn of possibility of too much optimism and that in fact we are awaiting a bear market.'], ['final.txt', 'The stock exchange predicts a bull market which would make many investors happy, but analysts warn of possibility of too much optimism and that in fact we are awaiting a bear market. As always predicting the future market is an uncertain game and all investors should follow their instincts and best practices.']]
+files = pd.DataFrame(data, columns=['file_name', 'content']).astype({'file_name':'object', 'content':'object'})
+"Write a solution to find the number of files that have at least one occurrence of the words 'bull' and 'bear' as a standalone word, 
+respectively, disregarding any instances where it appears without space on either side 
+(e.g. 'bullet', 'bears', 'bull.', or 'bear' at the beginning or end of a sentence will not be considered) 
+Return the word 'bull' and 'bear' along with the corresponding number of occurrences in any order."
+
+def count_occurrences(files: pd.DataFrame) -> pd.DataFrame:
+    files['bull'] = files.content.str.contains(r"\sbull\s") 
+    files['bear'] = files.content.str.contains(r"\sbear\s")
+    return pd.DataFrame({'word':['bull', 'bear'], 'count':[files['bull'].sum(), files['bear'].sum()]})
+    
 
 

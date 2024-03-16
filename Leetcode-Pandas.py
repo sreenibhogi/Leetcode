@@ -186,6 +186,7 @@ Problem #10: Count Occurrences in Text
 =====================================
 data = [['draft1.txt', 'The stock exchange predicts a bull market which would make many investors happy.'], ['draft2.txt', 'The stock exchange predicts a bull market which would make many investors happy, but analysts warn of possibility of too much optimism and that in fact we are awaiting a bear market.'], ['final.txt', 'The stock exchange predicts a bull market which would make many investors happy, but analysts warn of possibility of too much optimism and that in fact we are awaiting a bear market. As always predicting the future market is an uncertain game and all investors should follow their instincts and best practices.']]
 files = pd.DataFrame(data, columns=['file_name', 'content']).astype({'file_name':'object', 'content':'object'})
+
 "Write a solution to find the number of files that have at least one occurrence of the words 'bull' and 'bear' as a standalone word, 
 respectively, disregarding any instances where it appears without space on either side 
 (e.g. 'bullet', 'bears', 'bull.', or 'bear' at the beginning or end of a sentence will not be considered) 
@@ -195,6 +196,24 @@ def count_occurrences(files: pd.DataFrame) -> pd.DataFrame:
     files['bull'] = files.content.str.contains(r"\sbull\s") 
     files['bear'] = files.content.str.contains(r"\sbear\s")
     return pd.DataFrame({'word':['bull', 'bear'], 'count':[files['bull'].sum(), files['bear'].sum()]})
+
+Problem #11 : Nth Highest Salary:
+=================================
+data = [[1, 100], [2, 200], [3, 300]]
+employee = pd.DataFrame(data, columns=['Id', 'Salary']).astype({'Id':'Int64', 'Salary':'Int64'})
+"Write a solution to find the nth highest salary from the Employee table. If there is no nth highest salary, return null."
+
+def nth_highest_salary(employee: pd.DataFrame, N: int) -> pd.DataFrame:
+    # Drop any duplicate salary values to avoid counting duplicates as separate salary ranks
+    unique_salaries = employee['salary'].drop_duplicates()
+    # Sort the unique salaries in descending order and get the Nth highest salary
+    sorted_salaries = unique_salaries.sort_values(ascending=False)
+    # If N exceeds the number of unique salaries, return None
+    if N > len(sorted_salaries):
+        return pd.DataFrame({f'getNthHighestSalary({N})': [None]})
+    # Get the Nth highest salary from the sorted salaries
+    nth_highest = sorted_salaries.iloc[N - 1]
+    return pd.DataFrame({f'getNthHighestSalary({N})': [nth_highest]})
     
 
 

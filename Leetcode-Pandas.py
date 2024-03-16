@@ -204,16 +204,12 @@ employee = pd.DataFrame(data, columns=['Id', 'Salary']).astype({'Id':'Int64', 'S
 "Write a solution to find the nth highest salary from the Employee table. If there is no nth highest salary, return null."
 
 def nth_highest_salary(employee: pd.DataFrame, N: int) -> pd.DataFrame:
-    # Drop any duplicate salary values to avoid counting duplicates as separate salary ranks
-    unique_salaries = employee['salary'].drop_duplicates()
-    # Sort the unique salaries in descending order and get the Nth highest salary
-    sorted_salaries = unique_salaries.sort_values(ascending=False)
-    # If N exceeds the number of unique salaries, return None
-    if N > len(sorted_salaries):
-        return pd.DataFrame({f'getNthHighestSalary({N})': [None]})
-    # Get the Nth highest salary from the sorted salaries
-    nth_highest = sorted_salaries.iloc[N - 1]
-    return pd.DataFrame({f'getNthHighestSalary({N})': [nth_highest]})
+    df=pd.DataFrame()
+    ee=employee.sort_values(by='salary',ascending=False)
+    ss=ee['salary'].unique()
+    df[f'getNthHighestSalary({N})']= ([ss[N-1]] if N<=len(ss) and N>0 else [None] )
+    return  df
+
     
 
 

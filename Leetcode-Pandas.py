@@ -244,6 +244,9 @@ employee = pd.DataFrame(data, columns=['id', 'name', 'salary', 'departmentId']).
 data = [[1, 'IT'], [2, 'Sales']]
 department = pd.DataFrame(data, columns=['id', 'name']).astype({'id':'Int64', 'name':'object'})
 
+"Write a solution to find employees who have the highest salary in each of the departments.
+Return the result table in any order."
+
 def department_highest_salary(employee: pd.DataFrame, department: pd.DataFrame) -> pd.DataFrame:
     department=department.rename(columns={'id':'departmentId'})
     df=pd.merge(employee,department,how='outer', on='departmentId') # Join the two tables using left outer

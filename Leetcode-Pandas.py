@@ -237,6 +237,23 @@ def second_highest_salary(employee: pd.DataFrame) -> pd.DataFrame:
     df[f'SecondHighestSalary']= ([ss[2-1]] if 2<=len(ss) else [None] )
     return df
 
+Problem # 13 Department highest Salary:
+=====================================
+data = [[1, 'Joe', 70000, 1], [2, 'Jim', 90000, 1], [3, 'Henry', 80000, 2], [4, 'Sam', 60000, 2], [5, 'Max', 90000, 1]]
+employee = pd.DataFrame(data, columns=['id', 'name', 'salary', 'departmentId']).astype({'id':'Int64', 'name':'object', 'salary':'Int64', 'departmentId':'Int64'})
+data = [[1, 'IT'], [2, 'Sales']]
+department = pd.DataFrame(data, columns=['id', 'name']).astype({'id':'Int64', 'name':'object'})
+
+def department_highest_salary(employee: pd.DataFrame, department: pd.DataFrame) -> pd.DataFrame:
+    department=department.rename(columns={'id':'departmentId'})
+    df=pd.merge(employee,department,how='outer', on='departmentId') # Join the two tables using left outer
+    df=df[['name_y','name_x','salary']] # select the required columns for output
+    df=df.rename(columns={'name_y':'Department','name_x':'Employee','salary':'Salary'}) # rename the columns
+    # Use group by to group data by 'department' and apply a lambda function to get employees with highest salary in each group
+    df=df.groupby('Department').apply(lambda x: x[x.Salary==x.Salary.max()])
+    return df
+
+
     
 
 

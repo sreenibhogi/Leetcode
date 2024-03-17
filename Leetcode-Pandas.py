@@ -203,12 +203,39 @@ data = [[1, 100], [2, 200], [3, 300]]
 employee = pd.DataFrame(data, columns=['Id', 'Salary']).astype({'Id':'Int64', 'Salary':'Int64'})
 "Write a solution to find the nth highest salary from the Employee table. If there is no nth highest salary, return null."
 
+1st method:
+---------
 def nth_highest_salary(employee: pd.DataFrame, N: int) -> pd.DataFrame:
     df=pd.DataFrame()
     ee=employee.sort_values(by='salary',ascending=False)
     ss=ee['salary'].unique()
     df[f'getNthHighestSalary({N})']= ([ss[N-1]] if N<=len(ss) and N>0 else [None] )
     return  df
+2nd Method of writing IF statement:
+----------------------------------
+def nth_highest_salary(employee: pd.DataFrame, N: int) -> pd.DataFrame:
+    ee = employee.sort_values(by='salary', ascending=False)
+    ss = ee['salary'].unique()
+    df=pd.DataFrame()
+    if N<=len(ss) and N>0:
+        df[f'getNthHighestSalary({N})']= ([ss[N-1]])
+    else:
+        df[f'getNthHighestSalary({N})']= [None]
+   # df[f'getNthHighestSalary({N})']= ([ss[N-1]] if N<=len(ss) and N>0 else [None] )
+    return df
+
+Problem #12 : 2nd Highest Salary:
+=================================
+data = [[1, 100], [2, 200], [3, 300]]
+employee = pd.DataFrame(data, columns=['Id', 'Salary']).astype({'Id':'Int64', 'Salary':'Int64'})
+"Write a solution to find the nth highest salary from the Employee table. If there is no nth highest salary, return null."
+
+def second_highest_salary(employee: pd.DataFrame) -> pd.DataFrame:
+    ee = employee.sort_values(by='salary', ascending=False)
+    ss = ee['salary'].unique()
+    df=pd.DataFrame()
+    df[f'SecondHighestSalary']= ([ss[2-1]] if 2<=len(ss) else [None] )
+    return df
 
     
 
